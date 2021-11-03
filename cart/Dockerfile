@@ -26,13 +26,18 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
-WORKDIR /app
-COPY . /app
+RUN mkdir /var/www
+WORKDIR /var/www
+COPY . /var/www
+
 RUN echo "PWD is: $PWD"
 RUN echo "WHOAMI is: $WHOAMI"
 RUN ls -lah
+
 COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
 COPY settings-docker.xml /usr/share/maven/ref/
+RUN chmod +x /usr/local/bin/mvn-entrypoint.sh
+
 EXPOSE 8082
 
 ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
