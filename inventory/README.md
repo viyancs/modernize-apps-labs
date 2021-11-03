@@ -27,7 +27,7 @@ oc new-app -e POSTGRESQL_USER=inventory \
 2. Use the Fabric8 Maven Plugin to launch the S2I process on the OpenShift cluster & start the pod.
 
 ```
-mvn clean fabric8:deploy -Popenshift -DskipTests
+apache-maven-3.5.4/bin/mvn  clean fabric8:deploy -Popenshift -DskipTests
 ```
 
 This will build and deploy the microservice.
