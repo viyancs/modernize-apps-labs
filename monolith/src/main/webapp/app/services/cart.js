@@ -5,14 +5,16 @@ angular.module("app")
 .factory('cart', ['$http', '$q', 'COOLSTORE_CONFIG', 'Auth', '$location', function($http, $q, COOLSTORE_CONFIG, $auth, $location) {
 	var factory = {}, cart, products, cartId, baseUrl;
 	
-	console.log(!!COOLSTORE_CONFIG.MONOLITH);
-	if(!!COOLSTORE_CONFIG.MONOLITH) {
+	console.log(!!COOLSTORE_CONFIG.MONOLITH_CART);
+	console.log(!!COOLSTORE_CONFIG.MICRPO_CART_API_SECURE_ENDPOINT);
+	console.log(!!COOLSTORE_CONFIG.MICRPO_CART_API_ENDPOINT);
+	if(!!COOLSTORE_CONFIG.MONOLITH_CART) {
 		baseUrl='/services/cart';
 	} else {
 		if ($location.protocol() === 'https') {
-			baseUrl = (COOLSTORE_CONFIG.SECURE_API_ENDPOINT.startsWith("https://") ? COOLSTORE_CONFIG.SECURE_API_ENDPOINT : "https://" + COOLSTORE_CONFIG.SECURE_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/services/cart';
+			baseUrl = (COOLSTORE_CONFIG.MICRPO_CART_API_SECURE_ENDPOINT.startsWith("https://") ? COOLSTORE_CONFIG.MICRPO_CART_API_SECURE_ENDPOINT : "https://" + COOLSTORE_CONFIG.MICRPO_CART_API_SECURE_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/services/cart';
 		} else {
-			baseUrl = (COOLSTORE_CONFIG.API_ENDPOINT.startsWith("http://") ? COOLSTORE_CONFIG.API_ENDPOINT : "http://" + COOLSTORE_CONFIG.API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/services/cart';
+			baseUrl = (COOLSTORE_CONFIG.MICRPO_CART_API_ENDPOINT.startsWith("http://") ? COOLSTORE_CONFIG.MICRPO_CART_API_ENDPOINT : "http://" + COOLSTORE_CONFIG.MICRPO_CART_API_ENDPOINT + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1")) + '/services/cart';
 		}
 	}
 

@@ -37,7 +37,7 @@ public class CatalogEndpointTest {
     // TODO: Add ClassRule for HoverFly Inventory simulation
     @ClassRule
     public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode(dsl(
-            service("inventory:8080")
+            service("inventory:8089")
     //                    .andDelay(2500, TimeUnit.MILLISECONDS).forMethod("GET")
                     .get(startsWith("/services/inventory"))
     //                    .willReturn(serverError())

@@ -44,3 +44,7 @@ For example:
 
 ```
 
+*  run locally
+```
+mvn spring-boot:run
+```

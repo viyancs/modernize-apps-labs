@@ -51,8 +51,10 @@ public class CartServiceVerticle extends AbstractVerticle {
 
         // Create hello router
         router.get("/hello")
-                .handler(rc -> rc.response().setStatusCode(200).putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                        .end(new JsonObject().put("message", "Hello").encode()));
+                .handler(rc -> rc.response()
+                .setStatusCode(200)
+                .putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+                .end(new JsonObject().put("message", "Hello").encode()));
         // TODO: Create carts router
 
         // Create cart router
@@ -65,6 +67,7 @@ public class CartServiceVerticle extends AbstractVerticle {
 
         // Create remove router
         router.delete("/services/cart/:cartId/:itemId/:quantity").handler(this::removeShoppingCartItem);
+        router.options("/services/cart/:cartId/:itemId/:quantity").handler(this::removeShoppingCartItem);
 
         // Create static router
         router.get("/*").handler(StaticHandler.create());
@@ -78,7 +81,7 @@ public class CartServiceVerticle extends AbstractVerticle {
         logger.info("Retrieved " + rc.request().method().name() + " request to " + rc.request().absoluteURI());
         JsonArray cartList = new JsonArray();
         carts.keySet().forEach(cartId -> cartList.add(Transformers.shoppingCartToJson(carts.get(cartId))));
-        rc.response().setStatusCode(200).putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+        rc.response().setStatusCode(200).putHeader(HttpHeaders.CONTENT_TYPE, "application/json").putHeader("Access-Control-Allow-Origin", "*")
                 .end(cartList.encodePrettily());
     }
 
@@ -88,13 +91,13 @@ public class CartServiceVerticle extends AbstractVerticle {
         String cartId = rc.pathParam("cartId");
         ShoppingCart cart = getCart(cartId);
         this.getShippingFee(cart, message -> {
-            if(message.succeeded()) {
+            if (message.succeeded()) {
                 cart.setShippingTotal(message.result());
-                sendCart(cart,rc);
+                sendCart(cart, rc);
             } else {
                 sendError(rc);
             }
-        
+
         });
     }
 
@@ -116,13 +119,13 @@ public class CartServiceVerticle extends AbstractVerticle {
                 if (item.getProduct().getItemId().equals(itemId)) {
                     item.setQuantity(item.getQuantity() + quantity);
                     this.getShippingFee(cart, message -> {
-                        if(message.succeeded()) {
+                        if (message.succeeded()) {
                             cart.setShippingTotal(message.result());
-                            sendCart(cart,rc);
+                            sendCart(cart, rc);
                         } else {
                             sendError(rc);
                         }
-                    
+
                     });// update the shipping fee
                 }
             });
@@ -134,7 +137,7 @@ public class CartServiceVerticle extends AbstractVerticle {
                 if (reply.succeeded()) {
                     newItem.setProduct(reply.result());
                     cart.addShoppingCartItem(newItem);
-                    sendCart(cart,rc); //TODO: update the shipping fee, here as well
+                    sendCart(cart, rc); // TODO: update the shipping fee, here as well
                 } else {
                     sendError(rc);
                 }
@@ -149,56 +152,52 @@ public class CartServiceVerticle extends AbstractVerticle {
         String itemId = rc.pathParam("itemId");
         int quantity = Integer.parseInt(rc.pathParam("quantity"));
         ShoppingCart cart = getCart(cartId);
-    
-        //If all quantity with the same Id should be removed then remove it from the list completely. The is the normal use-case
-        cart.getShoppingCartItemList().removeIf(i -> i.getProduct().getItemId().equals(itemId) && i.getQuantity()<=quantity);
-    
-        //If not all quantities should be removed we need to update the list
-        cart.getShoppingCartItemList().forEach(i ->  {
-                if(i.getProduct().getItemId().equals(itemId))
-                    i.setQuantity(i.getQuantity()-quantity);
-            }
-        );
-        sendCart(cart,rc);
+
+        // If all quantity with the same Id should be removed then remove it from the
+        // list completely. The is the normal use-case
+        cart.getShoppingCartItemList()
+                .removeIf(i -> i.getProduct().getItemId().equals(itemId) && i.getQuantity() <= quantity);
+
+        // If not all quantities should be removed we need to update the list
+        cart.getShoppingCartItemList().forEach(i -> {
+            if (i.getProduct().getItemId().equals(itemId))
+                i.setQuantity(i.getQuantity() - quantity);
+        });
+        sendCart(cart, rc);
     }
 
     // TODO: Add handler for checking out a shopping cart
 
-    //Add method for getting products
+    // Add method for getting products
     private void getProduct(String itemId, Handler<AsyncResult<Product>> resultHandler) {
         WebClient client = WebClient.create(vertx);
         Integer port = config().getInteger("catalog.service.port", 8080);
         String hostname = config().getString("catalog.service.hostname", "localhost");
         Integer timeout = config().getInteger("catalog.service.timeout", 0);
-        client.get(port, hostname,"/services/product/"+itemId)
-            .timeout(timeout)
-            .send(handler -> {
-                if(handler.succeeded()) {
-                    Product product = Transformers.jsonToProduct(handler.result().body().toJsonObject());
-                    resultHandler.handle(Future.succeededFuture(product));
-                } else {
-                    resultHandler.handle(Future.failedFuture(handler.cause()));
-                }
-    
-    
-            });
+        client.get(port, hostname, "/services/product/" + itemId).timeout(timeout).send(handler -> {
+            if (handler.succeeded()) {
+                Product product = Transformers.jsonToProduct(handler.result().body().toJsonObject());
+                resultHandler.handle(Future.succeededFuture(product));
+            } else {
+                resultHandler.handle(Future.failedFuture(handler.cause()));
+            }
+
+        });
     }
 
     // Add method for getting the shipping fee
     private void getShippingFee(ShoppingCart cart, Handler<AsyncResult<Double>> resultHandler) {
         EventBus eb = vertx.eventBus();
-    
-        eb.send("shipping",
-            Transformers.shoppingCartToJson(cart).encode(),
-            reply -> {
-                if(reply.succeeded()) {
-                    resultHandler.handle(Future.succeededFuture(((JsonObject)reply.result().body()).getDouble("shippingFee")));
-    
-                } else {
-                    resultHandler.handle(Future.failedFuture(reply.cause()));
-                }
+
+        eb.send("shipping", Transformers.shoppingCartToJson(cart).encode(), reply -> {
+            if (reply.succeeded()) {
+                resultHandler
+                        .handle(Future.succeededFuture(((JsonObject) reply.result().body()).getDouble("shippingFee")));
+
+            } else {
+                resultHandler.handle(Future.failedFuture(reply.cause()));
             }
-        );
+        });
     }
 
     private void sendCart(ShoppingCart cart, RoutingContext rc) {
@@ -206,8 +205,11 @@ public class CartServiceVerticle extends AbstractVerticle {
     }
 
     private void sendCart(ShoppingCart cart, RoutingContext rc, int status) {
-        rc.response().setStatusCode(status).putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
-                .end(Transformers.shoppingCartToJson(cart).encodePrettily());
+        rc.response().setStatusCode(status)
+        .putHeader(HttpHeaders.CONTENT_TYPE, "application/json")
+        .putHeader("Access-Control-Allow-Methods","*")
+        .putHeader("Access-Control-Allow-Origin", "*")
+        .end(Transformers.shoppingCartToJson(cart).encodePrettily());
     }
 
     private void sendError(RoutingContext rc) {
@@ -217,7 +219,7 @@ public class CartServiceVerticle extends AbstractVerticle {
     private void sendError(String reason, RoutingContext rc) {
         logger.error("Error processing " + rc.request().method().name() + " request to " + rc.request().absoluteURI()
                 + " with reason " + reason);
-        rc.response().setStatusCode(500).end();
+        rc.response().setStatusCode(500).putHeader("Access-Control-Allow-Methods","GET, POST, OPTIONS, DELETE").putHeader("Access-Control-Allow-Origin", "*").end();
     }
 
     private static ShoppingCart getCart(String cartId) {
