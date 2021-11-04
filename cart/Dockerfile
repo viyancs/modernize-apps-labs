@@ -41,7 +41,7 @@ RUN echo "PWD is: $PWD"
 RUN ls -lah
 
 COPY mvn-entrypoint.sh /usr/local/bin/mvn-entrypoint.sh
-COPY settings-docker.xml ${MAVEN_CONFIG}
+COPY settings-docker.xml /data/maven/.m2/
 RUN chmod +x /usr/local/bin/mvn-entrypoint.sh
 
 EXPOSE 8082
