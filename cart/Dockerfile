@@ -26,7 +26,7 @@ RUN set -xe; \
 
 # Install Maven
 ARG MAVEN_VERSION=3.8.3
-ARG USER_HOME_DIR="/home/${MAVEN_USER}"
+ARG MAVEN_DIR="/var/tmp"
 ARG SHA=1c12a5df43421795054874fd54bb8b37d242949133b5bf6052a063a13a93f13a20e6e9dae2b3d85b9c7034ec977bbc2b6e7f66832182b9c863711d78bfe60faa
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
@@ -38,13 +38,14 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 ENV MAVEN_HOME /usr/share/maven
-ENV MAVEN_CONFIG "${USER_HOME_DIR}/.m2"
-RUN mkdir p ${USER_HOME_DIR}/.m2; exit 0
-RUN chmod -R 775 ${USER_HOME_DIR}
-RUN chmod -R 775 ${USER_HOME_DIR}/.m2
-RUN chown -R ${MAVEN_USER}:${MAVEN_USER} ${USER_HOME_DIR}/.m2
-RUN ls -lah /home
-RUN ls -lah /home/${MAVEN_USER}
+ENV MAVEN_CONFIG "${MAVEN_DIR}/.m2"
+
+RUN mkdir p ${MAVEN_DIR}/.m2; exit 0
+RUN chmod -R 777 ${MAVEN_DIR}
+RUN chmod -R 777 ${MAVEN_DIR}/.m2
+RUN chown -R ${MAVEN_USER}:${MAVEN_USER} ${MAVEN_DIR}/.m2
+RUN ls -lah /var
+RUN ls -lah ${MAVEN_DIR}
 
 RUN mkdir /var/www
 WORKDIR /var/www
