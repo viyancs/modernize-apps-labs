@@ -20,9 +20,7 @@ RUN ls -lah /data
 RUN cat /usr/share/maven/conf/settings.xml
 
 WORKDIR /var/www
-COPY pom.xml /var/www
-COPY settings-docker.xml /var/www
-COPY src /var/www
+COPY . /var/www
 RUN chmod 775 -R /var/www
 RUN ls -lah
 
