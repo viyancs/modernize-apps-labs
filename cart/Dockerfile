@@ -14,7 +14,7 @@ FROM openjdk:11-jdk
 RUN mkdir /var/www
 RUN mkdir /data
 RUN mkdir /data/maven
-RUN chmod 775 -R /data
+RUN chmod 777 -R /data
 RUN whoami 
 RUN ls -lah /data
 
