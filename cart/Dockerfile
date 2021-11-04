@@ -21,7 +21,7 @@ RUN cat /usr/share/maven/conf/settings.xml
 
 WORKDIR /var/www
 COPY . /var/www
-
+RUN chmod 775 -R /var/www
 RUN ls -lah
 
 COPY settings-docker.xml /usr/share/maven/conf/settings.xml
