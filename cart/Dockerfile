@@ -40,9 +40,9 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "${USER_HOME_DIR}/.m2"
 RUN mkdir p ${USER_HOME_DIR}/.m2; exit 0
-RUN chmod 775 ${USER_HOME_DIR}
-RUN chmod 775 ${USER_HOME_DIR}/.m2
-RUN chown ${MAVEN_USER}:${MAVEN_USER} ${USER_HOME_DIR}/.m2
+RUN chmod -R 775 ${USER_HOME_DIR}
+RUN chmod -R 775 ${USER_HOME_DIR}/.m2
+RUN chown -R ${MAVEN_USER}:${MAVEN_USER} ${USER_HOME_DIR}/.m2
 RUN ls -lah /home
 RUN ls -lah /home/${MAVEN_USER}
 
