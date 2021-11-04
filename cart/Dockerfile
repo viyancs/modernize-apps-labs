@@ -47,4 +47,5 @@ RUN chmod +x /usr/local/bin/mvn-entrypoint.sh
 EXPOSE 8082
 
 ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
+RUN chmod 777 -R /data/maven
 CMD ["mvn","compile","vertx:run"]
