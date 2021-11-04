@@ -45,7 +45,7 @@ COPY settings-docker.xml /data/maven/.m2/
 RUN chmod +x /usr/local/bin/mvn-entrypoint.sh
 
 EXPOSE 8082
-
-ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
 RUN chmod 777 -R /data/maven
+ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
+
 CMD ["mvn","compile","vertx:run"]
