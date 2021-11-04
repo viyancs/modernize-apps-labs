@@ -10,6 +10,7 @@
 # docker run -i --rm -p 8081:8081 springboot/sample-demo
 ####
 FROM openjdk:11-jdk
+USER root
 ###########################################################################
 # non-root user:
 ###########################################################################
@@ -40,7 +41,9 @@ ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "${USER_HOME_DIR}/.m2"
 RUN mkdir p ${USER_HOME_DIR}/.m2; exit 0
 RUN chmod 775 ${USER_HOME_DIR}
-RUN chmod 775 ${USER_HOME_DIR}/.m2
+RUN chmod 777 ${USER_HOME_DIR}/.m2
+RUN ls -lah /home
+RUN ls -lah /home/${MAVEN_USER}
 
 RUN mkdir /var/www
 WORKDIR /var/www
