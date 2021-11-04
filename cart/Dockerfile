@@ -11,6 +11,13 @@
 ####
 FROM openjdk:11-jdk
 
+RUN mkdir /var/www
+RUN mkdir /data
+RUN mkdir /data/maven
+RUN chmod 775 -R /data
+RUN whoami 
+RUN ls -lah /data
+
 # Install Maven
 ARG MAVEN_VERSION=3.8.3
 ARG USER_HOME_DIR="/data/maven"
@@ -26,13 +33,6 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
-
-RUN mkdir /var/www
-RUN mkdir /data
-RUN mkdir /data/maven
-RUN chmod 775 -R /data
-RUN whoami 
-RUN ls -lah /data
 
 WORKDIR /var/www
 COPY . /var/www
