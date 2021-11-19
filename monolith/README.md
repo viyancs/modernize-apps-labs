@@ -88,4 +88,18 @@ If you want to redeploy the application there is no need to use the `wildfly:add
         mvn clean package wildfly:deploy
 
 
- 
+ Awitching between Mono to Micro
+ =======
+ 1. change coolstore.json from
+
+ ```
+ "MICRPO_CART_API_ENDPOINT": "http://localhost:8080"
+ ```
+ to
+ ```
+ "MICRPO_CART_API_ENDPOINT": "http://localhost:8082"
+ ```
+
+ open http://localhost:8080 and try to add product to cart , make sure cart service and catalog was running 
+ cart service = mvn compile vertx:run
+ catalog service = mvn spring-boot:run
