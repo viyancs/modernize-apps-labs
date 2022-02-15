@@ -87,5 +87,19 @@ If you want to redeploy the application there is no need to use the `wildfly:add
 
         mvn clean package wildfly:deploy
 
+Openshift Side
+=======
+
+1. create subcription on redhat customer portal https://access.redhat.com/management/subscriptions
+2. go to this url and create service account https://access.redhat.com/terms-based-registry/
+3. after create sa copy the yaml type for openshift and then apply on openshift side , its gonna create secret configuration on openshift side
+4. after that go to User Management->Service Account on Your Openshift and then edit the service account that will be use secret from registry access in this case is builder service account, add following code
+
+```
+imagePullSecrets:
+  - name: builder-dockercfg-dpr6q
+  - name: 14631892-sa-viyancs-redhat-pull-secret ( this is the secret you use from red hat subcription registry)
+```
+
 
  
