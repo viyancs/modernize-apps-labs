@@ -4,7 +4,7 @@
 FROM registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7
 
 # setting JVM options
-RUN export JAVA_OPTS="-XX:+AssumeMP"
+RUN export JAVA_OPTS="-XX:ParallelGCThreads=4"
 
 # file author / maintainer
 LABEL "viyancs" "msofyancs@gmail.com"
