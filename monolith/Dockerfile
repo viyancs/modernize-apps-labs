@@ -1,7 +1,7 @@
 # dockerfile to build image for JBoss EAP 7.0
 
 #start from eap70-openshift
-FROM registry.redhat.io/rhel-7-server-jb-eap-7.0-containers
+FROM registry.redhat.io/v2/rhel-7-server-jb-eap-7.0-containers
 
 # file author / maintainer
 LABEL "viyancs" "msofyancs@gmail.com"
