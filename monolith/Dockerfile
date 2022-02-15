@@ -4,7 +4,7 @@
 FROM registry.redhat.io/jboss-eap-7/eap74-openjdk8-openshift-rhel7
 
 # setting JVM options
-ENV JAVA_OPTS="-XX:+UseParallelGC -XX:+UseParallelOldGC -XX:+DisableExplicitGC -XX:+HeapDumpOnOutOfMemoryError -server -XX:+AssumeMP -XX:ParallelGCThreads=16"
+ENV JAVA_OPTS="-XX:+AssumeMP -XX:ParallelGCThreads=16"
 
 # file author / maintainer
 LABEL "viyancs" "msofyancs@gmail.com"
