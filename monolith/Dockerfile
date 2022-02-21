@@ -10,7 +10,7 @@ ENV JAVA_OPTS="-XX:+AssumeMP -XX:ParallelGCThreads=16"
 LABEL "viyancs" "msofyancs@gmail.com"
 
 # Copy war to deployments folder
-COPY backup/before_refactoring.war $JBOSS_HOME/standalone/deployments/ROOT.war
+COPY backup/before_refactoring.war $JBOSS_HOME/standalone/deployments/before_refactoring.war
 
 #copy serverconfiguration for the jboss
 COPY standalone-full.xml /opt/eap/standalone/configuration/standalone-full.xml
@@ -19,7 +19,7 @@ COPY standalone-full.xml /opt/eap/standalone/configuration/standalone-full.xml
 USER root
 
 # Modify owners war
-RUN chown jboss:jboss $JBOSS_HOME/standalone/deployments/ROOT.war
+RUN chown jboss:jboss $JBOSS_HOME/standalone/deployments/before_refactoring.war
 #RUN chown jboss:jboss /opt/eap/standalone/configuration/standalone-openshift.xml
 
 # Important, use jboss user to run image
