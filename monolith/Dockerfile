@@ -10,7 +10,7 @@ ENV JAVA_OPTS="-XX:+AssumeMP -XX:ParallelGCThreads=16"
 LABEL "viyancs" "msofyancs@gmail.com"
 
 # Copy war to deployments folder
-COPY backup/after_refactoring.war $JBOSS_HOME/standalone/deployments/ROOT.war
+COPY backup/microservice.war $JBOSS_HOME/standalone/deployments/ROOT.war
 
 #copy serverconfiguration for the jboss
 COPY standalone-full.xml /opt/eap/standalone/configuration/standalone-full.xml
