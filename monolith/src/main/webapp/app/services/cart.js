@@ -5,10 +5,10 @@ angular.module("app")
 .factory('cart', ['$http', '$q', 'COOLSTORE_CONFIG', 'Auth', '$location', function($http, $q, COOLSTORE_CONFIG, $auth, $location) {
 	var factory = {}, cart, products, cartId, baseUrl;
 	
-	console.log(!!COOLSTORE_CONFIG.MONOLITH_CART);
-	console.log(!!COOLSTORE_CONFIG.MICRPO_CART_API_SECURE_ENDPOINT);
-	console.log(!!COOLSTORE_CONFIG.MICRPO_CART_API_ENDPOINT);
-	if(!!COOLSTORE_CONFIG.MONOLITH_CART) {
+	console.log(COOLSTORE_CONFIG.MONOLITH_CART);
+	console.log(COOLSTORE_CONFIG.MICRPO_CART_API_SECURE_ENDPOINT);
+	console.log(COOLSTORE_CONFIG.MICRPO_CART_API_ENDPOINT);
+	if(COOLSTORE_CONFIG.MONOLITH_CART === true) {
 		baseUrl='/services/cart';
 	} else {
 		if ($location.protocol() === 'https') {
