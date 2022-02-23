@@ -171,8 +171,8 @@ public class CartServiceVerticle extends AbstractVerticle {
     // Add method for getting products
     private void getProduct(String itemId, Handler<AsyncResult<Product>> resultHandler) {
         WebClient client = WebClient.create(vertx);
-        Integer port = config().getInteger("catalog.service.port", 8080);
-        String hostname = config().getString("catalog.service.hostname", "localhost");
+        Integer port = config().getInteger("catalog.service.port", 80);
+        String hostname = config().getString("catalog.service.hostname", "catalog-demo-modernize-application.apps.devocpcluster.imdevocplab.com");
         Integer timeout = config().getInteger("catalog.service.timeout", 0);
         client.get(port, hostname, "/services/product/" + itemId).timeout(timeout).send(handler -> {
             if (handler.succeeded()) {
