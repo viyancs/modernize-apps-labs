@@ -6,12 +6,22 @@
     <groupId>com.redhat.coolstore</groupId>
     <artifactId>cart</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <repositories>
+        <repository>
+            <id>redhat</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
     <properties>
         <vertx.version>3.4.2.redhat-006</vertx.version>
         <java.version>1.8</java.version>
         <vertx-maven-plugin.version>1.0.13</vertx-maven-plugin.version>
         <fabric8-maven-plugin.version>3.5.41</fabric8-maven-plugin.version>
-        <vertx.verticle>com.redhat.coolstore.CartServiceVerticle</vertx.verticle>
+        <vertx.verticle>com.redhat.coolstore.MainVerticle</vertx.verticle>
         <fabric8.generator.from>registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:1.5</fabric8.generator.from>
     </properties>
     <dependencyManagement>
