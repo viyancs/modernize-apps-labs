@@ -5,7 +5,7 @@
   "SSO_ENABLED": false,
   "MONOLITH_CART": false,
   "MICRPO_CART_API_SECURE_ENDPOINT": "",
-  "MICRPO_CART_API_ENDPOINT": "http://cart-demo-microservice-1.apps.devocpcluster.imdevocplab.com",
+  "MICRPO_CART_API_ENDPOINT": "http://cart-demo-modernize-application.apps.devocpcluster.imdevocplab.com",
   "MICRPO_CATALOG_API_SECURE_ENDPOINT": "",
   "MICRPO_CATALOG_API_ENDPOINT": ""
 }
