@@ -1,6 +1,6 @@
 {
     "http.port" : 8082,
     "catalog.service.port" : 80,
-    "catalog.service.hostname" : "catalog-demo-modernize-application.apps.devocpcluster.imdevocplab.com",
+    "catalog.service.hostname" : "catalog-mta.apps.devocpcluster.imdevocplab.com",
     "catalog.service.timeout" : 3000
 }
